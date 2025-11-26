@@ -1,0 +1,163 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Fighter {
+  id         String            @id @default(cuid())
+  name       String
+  nickname   String?
+  weightClass String
+  stance     String?
+  reachCm    Int?
+  heightCm   Int?
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+
+  fightsAsA  Fight[]           @relation("FighterAFights")
+  fightsAsB  Fight[]           @relation("FighterBFights")
+  wins       Fight[]           @relation("WinnerFights")
+  ratings    RatingSnapshot[]
+  fightStats FightStats[]
+  strikeStats StrikeStats[]
+
+  @@index([name])
+  @@index([weightClass])
+}
+
+model Fight {
+  id          String           @id @default(cuid())
+  date        DateTime
+  fighterAId  String
+  fighterBId  String
+  winnerId    String?
+  result      Result
+  method      Method
+  rounds      Int?
+  event       String           @default("unknown")
+  weightClass String           @default("unknown")
+  calcRunId   String?
+  createdAt   DateTime         @default(now())
+
+  fightUrl       String?
+  time           String?
+  timeFormat     String?
+  referee        String?
+  finishDetails  String?
+
+  fighterA Fighter @relation("FighterAFights", fields: [fighterAId], references: [id])
+  fighterB Fighter @relation("FighterBFights", fields: [fighterBId], references: [id])
+  winner   Fighter? @relation("WinnerFights", fields: [winnerId], references: [id])
+  calcRun  CalcRun? @relation(fields: [calcRunId], references: [id])
+  snapshots RatingSnapshot[]
+  fightStats FightStats[]
+  strikeStats StrikeStats[]
+
+  @@index([date])
+  @@index([weightClass])
+  @@unique([date, fighterAId, fighterBId, event, weightClass], name: "fight_unique")
+}
+
+model RatingSnapshot {
+  id        String   @id @default(cuid())
+  fighterId String
+  fightId   String?
+  calcRunId String
+  rating    Int
+  performanceRating Int?
+  peakRating        Int?      // Highest classic rating achieved up to this point
+  peakPerformanceRating Int?  // Highest performance rating achieved up to this point
+  deviation Float?
+  note      String?
+  createdAt DateTime @default(now())
+
+  fighter Fighter @relation(fields: [fighterId], references: [id])
+  fight   Fight?  @relation(fields: [fightId], references: [id])
+  calcRun CalcRun @relation(fields: [calcRunId], references: [id])
+
+  @@index([fighterId])
+  @@index([fightId])
+  @@index([calcRunId, fighterId])
+  @@index([calcRunId, fightId])
+}
+
+model CalcRun {
+  id          String            @id @default(cuid())
+  description String?
+  usePerformanceElo Boolean      @default(false)
+  createdAt   DateTime          @default(now())
+
+  fights    Fight[]
+  snapshots RatingSnapshot[]
+}
+
+enum Result {
+  FIGHTER_A
+  FIGHTER_B
+  DRAW
+  NO_CONTEST
+}
+
+enum Method {
+  KO
+  TKO
+  SUBMISSION
+  DECISION
+  OTHER
+}
+
+model FightStats {
+  id           String @id @default(cuid())
+  fightId      String
+  fighterId    String
+  isWinner     Boolean
+
+  knockdowns   Int
+  sigStrikesLanded    Int
+  sigStrikesAttempted Int
+  totalStrikesLanded  Int
+  totalStrikesAttempted Int
+  takedownsLanded     Int
+  takedownsAttempted  Int
+  submissionAttempts  Int
+  reversals           Int
+  controlTimeSeconds  Int
+
+  fight    Fight   @relation(fields: [fightId], references: [id], onDelete: Cascade)
+  fighter  Fighter @relation(fields: [fighterId], references: [id], onDelete: Cascade)
+
+  @@unique([fightId, fighterId])
+  @@index([fighterId])
+  @@index([fightId])
+}
+
+model StrikeStats {
+  id         String @id @default(cuid())
+  fightId    String
+  fighterId  String
+
+  headLanded     Int
+  headAttempted  Int
+  bodyLanded     Int
+  bodyAttempted  Int
+  legLanded      Int
+  legAttempted   Int
+
+  distanceLanded  Int
+  distanceAttempted Int
+  clinchLanded    Int
+  clinchAttempted Int
+  groundLanded    Int
+  groundAttempted Int
+
+  fight    Fight   @relation(fields: [fightId], references: [id], onDelete: Cascade)
+  fighter  Fighter @relation(fields: [fighterId], references: [id], onDelete: Cascade)
+
+  @@unique([fightId, fighterId])
+  @@index([fighterId])
+  @@index([fightId])
+}

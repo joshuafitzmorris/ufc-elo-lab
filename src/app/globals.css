@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f4f7fb;
+  --surface: #ffffff;
+  --surface-muted: #eef2f8;
+  --foreground: #0b1729;
+  --muted: #4b5563;
+  --accent: #1f6fff;
+  --accent-strong: #0b4cc9;
+  --outline: #d8e2f2;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-outline: var(--outline);
+  --font-sans: var(--font-display);
+  --font-mono: var(--font-mono);
+}
+
+body {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(31, 111, 255, 0.08), transparent 32%),
+    radial-gradient(circle at 80% 0%, rgba(11, 76, 201, 0.08), transparent 28%),
+    var(--background);
+  color: var(--foreground);
+  font-family: var(--font-display), system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+}
