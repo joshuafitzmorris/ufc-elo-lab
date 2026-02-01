@@ -11,9 +11,7 @@ import { sampleFights } from "../src/lib/data/sample";
 const prisma = new PrismaClient();
 
 const defaultFightFiles = [
-  "fights1-100.json",
-  "fights-101-200.json",
-  "fights-201-322.json",
+  "fights.json",
 ];
 
 async function main() {
