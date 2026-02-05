@@ -89,7 +89,7 @@ export function simulatePerformanceFight(
     upsetBonusPct: config.upsetBonusPct,
   });
 
-  let baseK = getK(config);
+  const baseK = getK(config);
   let performanceMultipliers: PerformanceMultipliers | undefined;
   let adjustedK = baseK;
 

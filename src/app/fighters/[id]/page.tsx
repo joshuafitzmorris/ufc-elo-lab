@@ -32,7 +32,7 @@ export default async function FighterPage({ params }: Props) {
           {fighter.name}
           {fighter.nickname && (
             <span className="ml-2 text-lg text-[var(--muted)]">
-              "{fighter.nickname}"
+              &ldquo;{fighter.nickname}&rdquo;
             </span>
           )}
         </h1>

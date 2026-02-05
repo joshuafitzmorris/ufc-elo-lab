@@ -1,8 +1,5 @@
 import CompareClient from "./CompareClient";
-import {
-  getLeaderboardRows,
-  type LeaderboardRow,
-} from "@/lib/leaderboard";
+import { getLeaderboardRows } from "@/lib/leaderboard";
 
 export const dynamic = "force-dynamic";
 

@@ -171,7 +171,7 @@ export default async function RankingsPage({ searchParams }: Props) {
                       </Link>
                       {row.nickname && (
                         <span className="ml-2 text-xs text-[var(--muted)]">
-                          "{row.nickname}"
+                          &ldquo;{row.nickname}&rdquo;
                         </span>
                       )}
                     </td>

@@ -395,8 +395,8 @@ async function recompute(
 
   let ratings: Record<string, number> = {};
   let performanceRatings: Record<string, number> = {};
-  let peakRatings: Record<string, number> = {};
-  let peakPerformanceRatings: Record<string, number> = {};
+  const peakRatings: Record<string, number> = {};
+  const peakPerformanceRatings: Record<string, number> = {};
 
   const snapshots: {
     fighterId: string;
