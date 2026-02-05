@@ -1,7 +1,19 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getLeaderboardRows } from "@/lib/leaderboard";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Classic Leaderboard",
+  description:
+    "Traditional UFC Elo leaderboard ranking fighters purely by wins and losses. No performance multipliers — just head-to-head results. See the classic ratings that have tracked combat sports for decades.",
+  openGraph: {
+    title: "Classic Leaderboard | UFC Elo Lab",
+    description:
+      "Traditional UFC Elo leaderboard based on wins and losses only, without performance weighting.",
+  },
+};
 
 export default async function LeaderboardPage() {
   const leaderboard = await getLeaderboardRows();

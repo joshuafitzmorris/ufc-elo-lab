@@ -1,7 +1,19 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getSystemComparison, getDualRankings } from "@/lib/analytics";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description:
+    "Deep analytics on UFC performance Elo vs classic Elo. See which fighters gain the most from dominant performances, track biggest rating swings, and analyze system-wide statistics across weight classes.",
+  openGraph: {
+    title: "Dashboard | UFC Elo Lab",
+    description:
+      "Analytics dashboard comparing classic Elo vs performance-weighted ratings. See top gainers, biggest movers, and system-wide statistics.",
+  },
+};
 
 export default async function DashboardPage() {
   const [comparison, topByPerformance] = await Promise.all([

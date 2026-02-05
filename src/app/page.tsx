@@ -1,6 +1,23 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "UFC Elo Lab — Performance-Weighted UFC Fighter Ratings",
+  description:
+    "The most sophisticated UFC Elo rating system. Track fighter performance across 6,000+ bouts with dual rating systems: classic win/loss and performance-weighted that rewards dominant finishes, knockdowns, and control time. Built for MMA analysts and hardcore fans.",
+  openGraph: {
+    title: "UFC Elo Lab — Performance-Weighted UFC Fighter Ratings",
+    description:
+      "Dual Elo rating systems tracking 6,000+ UFC fights. Compare classic rankings vs performance-weighted ratings that reward dominant finishes.",
+  },
+  twitter: {
+    title: "UFC Elo Lab — Performance-Weighted UFC Fighter Ratings",
+    description:
+      "The most sophisticated UFC Elo rating system. Track fighter performance with dual ratings: classic win/loss vs performance-weighted.",
+  },
+};
 
 const highlights = [
   {

@@ -1,8 +1,20 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getDualRankings, getWeightClasses } from "@/lib/analytics";
 
 type Props = {
   searchParams: Promise<{ weightClass?: string; sort?: string; limit?: string }>;
+};
+
+export const metadata: Metadata = {
+  title: "Rankings",
+  description:
+    "UFC fighter rankings with dual Elo systems. Filter by weight class, compare classic vs performance ratings, and discover which fighters benefit most from dominance bonuses. Updated after every UFC event.",
+  openGraph: {
+    title: "Rankings | UFC Elo Lab",
+    description:
+      "Complete UFC fighter rankings comparing classic Elo vs performance-weighted ratings across all weight classes.",
+  },
 };
 
 export default async function RankingsPage({ searchParams }: Props) {
