@@ -1,23 +1,24 @@
-name: Deploy
+name: Deploy to Cloud Run
 
 on:
   push:
     branches: [main]
-  workflow_dispatch:
 
 env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  PROJECT_ID: ufc-elo-lab
   REGION: us-central1
-  SERVICE: ufc-elo
+  SERVICE_NAME: ufc-elo-web
+  ARTIFACT_REGISTRY: us-central1-docker.pkg.dev
 
 jobs:
-  build-and-deploy:
+  deploy:
     name: Build & Deploy
     runs-on: ubuntu-latest
     environment: Production
     
     permissions:
       contents: read
+      id-token: write
 
     steps:
       - name: Checkout
@@ -34,30 +35,27 @@ jobs:
           project_id: ${{ env.PROJECT_ID }}
 
       - name: Configure Docker
-        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+        run: gcloud auth configure-docker ${{ env.ARTIFACT_REGISTRY }}
 
-      - name: Build and push image
+      - name: Build Docker image
         run: |
           docker build \
             --platform linux/amd64 \
-            -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/ufc-elo/app:${{ github.sha }} \
-            -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/ufc-elo/app:latest \
+            -t ${{ env.ARTIFACT_REGISTRY }}/${{ env.PROJECT_ID }}/ufc-elo/${{ env.SERVICE_NAME }}:${{ github.sha }} \
+            -t ${{ env.ARTIFACT_REGISTRY }}/${{ env.PROJECT_ID }}/ufc-elo/${{ env.SERVICE_NAME }}:latest \
             .
-          docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/ufc-elo/app:${{ github.sha }}
-          docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/ufc-elo/app:latest
+
+      - name: Push Docker image
+        run: |
+          docker push ${{ env.ARTIFACT_REGISTRY }}/${{ env.PROJECT_ID }}/ufc-elo/${{ env.SERVICE_NAME }}:${{ github.sha }}
+          docker push ${{ env.ARTIFACT_REGISTRY }}/${{ env.PROJECT_ID }}/ufc-elo/${{ env.SERVICE_NAME }}:latest
 
       - name: Deploy to Cloud Run
-        uses: google-github-actions/deploy-cloudrun@v2
-        with:
-          service: ${{ env.SERVICE }}
-          region: ${{ env.REGION }}
-          image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/ufc-elo/app:${{ github.sha }}
-          env_vars: |
-            NODE_ENV=production
-          secrets: |
-            DATABASE_URL=DATABASE_URL:latest
-
-      - name: Output URL
         run: |
-          echo "### Deployed! :rocket:" >> $GITHUB_STEP_SUMMARY
-          echo "URL: https://${{ env.SERVICE }}-${{ env.PROJECT_ID }}.run.app" >> $GITHUB_STEP_SUMMARY
+          gcloud run deploy ${{ env.SERVICE_NAME }} \
+            --image ${{ env.ARTIFACT_REGISTRY }}/${{ env.PROJECT_ID }}/ufc-elo/${{ env.SERVICE_NAME }}:${{ github.sha }} \
+            --region ${{ env.REGION }} \
+            --platform managed \
+            --allow-unauthenticated \
+            --set-secrets=DATABASE_URL=database-url:latest \
+            --set-env-vars=NODE_ENV=production
