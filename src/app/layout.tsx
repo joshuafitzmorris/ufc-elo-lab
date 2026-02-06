@@ -76,6 +76,42 @@ export default function RootLayout({
           </div>
         </header>
         {children}
+        <footer className="mt-auto border-t border-[var(--outline)] bg-[var(--surface)]">
+          <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-8 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-2">
+              <p className="text-sm font-semibold text-[var(--foreground)]">
+                UFC Elo Lab
+              </p>
+              <p className="text-xs text-[var(--muted)]">
+                Not affiliated with UFC or Zuffa LLC. Fan project for statistical analysis.
+              </p>
+            </div>
+            <nav className="flex flex-wrap items-center gap-4 text-sm text-[var(--muted)]">
+              <Link
+                href="/dashboard"
+                className="transition hover:text-[var(--foreground)]"
+              >
+                Dashboard
+              </Link>
+              <Link
+                href="/rankings"
+                className="transition hover:text-[var(--foreground)]"
+              >
+                Rankings
+              </Link>
+              <Link
+                href="/compare"
+                className="transition hover:text-[var(--foreground)]"
+              >
+                Compare
+              </Link>
+              <span className="text-[var(--outline)]">•</span>
+              <span className="text-xs">
+                © {new Date().getFullYear()}
+              </span>
+            </nav>
+          </div>
+        </footer>
       </body>
     </html>
   );
