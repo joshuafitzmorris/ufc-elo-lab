@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getFighterPerformanceProfile } from "@/lib/analytics";
@@ -7,6 +8,43 @@ export const dynamic = "force-dynamic";
 type Props = {
   params: Promise<{ id: string }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+  const profile = await getFighterPerformanceProfile(id);
+
+  if (!profile) {
+    return {
+      title: "Fighter Not Found",
+    };
+  }
+
+  const { fighter, ratings, fightStats } = profile;
+  const record = `${fightStats.wins}-${fightStats.losses}-${fightStats.draws}`;
+  const finishRate = fightStats.wins > 0 
+    ? ((fightStats.finishes / fightStats.wins) * 100).toFixed(0)
+    : "0";
+
+  const title = fighter.nickname
+    ? `${fighter.name} "${fighter.nickname}" — ${fighter.weightClass} (${record})`
+    : `${fighter.name} — ${fighter.weightClass} (${record})`;
+
+  const description = `${fighter.name} UFC fighter profile: ${record} record in ${fighter.weightClass}. Performance Elo: ${Math.round(ratings.performance)}, Classic Elo: ${Math.round(ratings.classic)}. ${finishRate}% finish rate with ${fightStats.finishes} career finishes. Deep performance analytics and fight-by-fight breakdown.`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "profile",
+    },
+    twitter: {
+      title,
+      description,
+    },
+  };
+}
 
 export default async function FighterPage({ params }: Props) {
   const { id } = await params;
@@ -22,8 +60,32 @@ export default async function FighterPage({ params }: Props) {
   const winRate = (fightStats.wins / fightStats.total) * 100;
   const finishRate = (fightStats.finishes / fightStats.wins) * 100 || 0;
 
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://ufcelolab.com";
+  const record = `${fightStats.wins}-${fightStats.losses}-${fightStats.draws}`;
+  
+  // JSON-LD structured data
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: fighter.name,
+    additionalName: fighter.nickname || undefined,
+    description: `UFC ${fighter.weightClass} fighter with a professional record of ${record}. Performance Elo rating: ${Math.round(ratings.performance)}.`,
+    url: `${baseUrl}/fighters/${fighter.id}`,
+    sport: "Mixed Martial Arts",
+    memberOf: {
+      "@type": "SportsOrganization",
+      name: "Ultimate Fighting Championship",
+      alternateName: "UFC",
+    },
+  };
+
   return (
-    <main className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-6 py-12">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <main className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-6 py-12">
       <div className="flex flex-col gap-3">
         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
           Fighter Profile
@@ -183,6 +245,7 @@ export default async function FighterPage({ params }: Props) {
         </div>
       </section>
     </main>
+    </>
   );
 }
 

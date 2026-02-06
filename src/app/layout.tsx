@@ -14,8 +14,28 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "UFC Elo Lab",
-  description: "Sport-science inspired UFC Elo dashboard and sandbox.",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_URL || "https://ufcelolab.com"
+  ),
+  title: {
+    default: "UFC Elo Lab",
+    template: "%s | UFC Elo Lab",
+  },
+  description:
+    "Performance-weighted UFC fighter ratings that reward dominant finishes. Compare classic Elo vs performance-based rankings across all weight classes.",
+  openGraph: {
+    type: "website",
+    siteName: "UFC Elo Lab",
+    title: "UFC Elo Lab",
+    description:
+      "Performance-weighted UFC fighter ratings that reward dominant finishes. Compare classic Elo vs performance-based rankings across all weight classes.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "UFC Elo Lab",
+    description:
+      "Performance-weighted UFC fighter ratings that reward dominant finishes.",
+  },
 };
 
 const navLinks = [
