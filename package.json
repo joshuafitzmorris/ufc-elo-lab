@@ -12,9 +12,10 @@
     "db:studio": "prisma studio"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.37.3",
     "@prisma/client": "^6.2.1",
-    "class-variance-authority": "^0.7.0",
     "cheerio": "^1.0.0-rc.12",
+    "class-variance-authority": "^0.7.0",
     "lucide-react": "^0.474.0",
     "next": "16.0.3",
     "pg": "^8.13.1",
@@ -26,6 +27,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/cheerio": "^0.22.35",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -34,7 +36,6 @@
     "eslint-config-next": "16.0.3",
     "prisma": "^6.2.1",
     "tailwindcss": "^4",
-    "@types/cheerio": "^0.22.35",
     "tsx": "^4.19.2",
     "typescript": "^5"
   },
