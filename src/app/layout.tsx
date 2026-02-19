@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
@@ -23,6 +23,12 @@ export const metadata: Metadata = {
   },
   description:
     "Performance-weighted UFC fighter ratings that reward dominant finishes. Compare classic Elo vs performance-based rankings across all weight classes.",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "UFC Elo Lab",
+  },
   openGraph: {
     type: "website",
     siteName: "UFC Elo Lab",
@@ -36,6 +42,16 @@ export const metadata: Metadata = {
     description:
       "Performance-weighted UFC fighter ratings that reward dominant finishes.",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+    { media: "(prefers-color-scheme: light)", color: "#ef4444" },
+  ],
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 const navLinks = [
