@@ -31,11 +31,25 @@ Been working on this for a while and figured UFC 326 is a good time to share.
 - See who's momentum is trending up/down
 - Find underrated fighters (high Performance Elo, low traditional)
 
-**Examples:**
-- [Fighter A] has higher Traditional but lower Performance Elo — winning close fights
-- [Fighter B] has lower Traditional but higher Performance Elo — finishing everyone but losing the ones that go to decision
+**Perfect example — UFC 326's main event:**
 
-Would love feedback from the community. What fighters should I spotlight?
+| Stat | Max Holloway | Charles Oliveira |
+|------|--------------|------------------|
+| UFC Record | 23-8 | 24-12 |
+| Finish Rate | 57% | 88% |
+| KO/TKO Wins | 11 | 4 |
+| Submissions | 2 | 17 |
+| Decision Wins | 10 | 3 |
+
+Oliveira finishes almost everyone (88%!) while Holloway goes to decision more often (43% of wins). Performance Elo should favor Oliveira's finishing ability, but Traditional Elo might favor Holloway's cleaner record.
+
+Which system predicts better? That's what makes this interesting.
+
+**Recent form (last 5):**
+- Holloway: 4-1 (TKO'd Gaethje in iconic BMF moment, lost to Topuria)
+- Oliveira: 3-2 (lost title shot to Tsarukyan, rebounded with sub win)
+
+Would love feedback from the community. What other matchups should I analyze?
 
 Link: [URL]
 
@@ -63,20 +77,54 @@ High Performance, Low Traditional = finishing people but losing decisions
 
 5/ For UFC 326 (Holloway vs. Oliveira 2):
 
-[Specific comparison data]
+📊 Max Holloway: 23-8, 57% finish rate
+📊 Charles Oliveira: 24-12, 88% finish rate
 
-Who do the numbers favor? Check it out: [URL]
+Oliveira's 17 subs should pump his Performance Elo.
+Holloway's 10 decision wins might not move the needle as much.
+
+6/ But here's the twist:
+
+Both just lost to Ilia Topuria by TKO.
+Both rebounded with wins.
+
+Traditional Elo sees them as equals coming in.
+Performance Elo? Might tell a different story.
+
+Check it out: [URL]
 
 ---
 
 ## Launch Timing Strategy
 
-**1 week before UFC 326 (Feb 28):**
-- Reddit post to r/MMA (evening, peak traffic)
+### Option A: Pre-Event (Feb 28) ⭐ IDEAL
+**1 week before UFC 326:**
+- Reddit post to r/MMA (evening, peak traffic ~6-9 PM EST)
 - Cross-post to r/UFC
 - Twitter thread with Holloway vs. Oliveira preview
+- Builds momentum before fight week
 
-**Fight week (March 3-7):**
+### Option B: Fight Week (March 3-6) ✅ STILL GOOD
+**If we miss Feb 28:**
+- Launch Monday March 3 or Tuesday March 4
+- Peak MMA engagement as fans prep for Saturday
+- Reddit: "UFC 326 Preview: What Performance Elo says about Holloway vs. Oliveira"
+- 4-5 days of pre-fight buzz
+
+### Option C: Fight Day (March 7) ⚠️ LAST RESORT
+**Same-day launch:**
+- Morning post: "Which fighter should you watch tonight according to Elo?"
+- Live-tweet during event
+- Capitalize on highest traffic day but less buildup time
+
+### Post-Launch (March 8+)
+- "How accurate was Performance Elo?" analysis
+- Update ratings with UFC 326 results
+- Build credibility for next event
+
+---
+
+**Fight week (March 3-7) activities regardless of launch date:**
 - Daily Twitter posts with fighter spotlights
 - Engage with MMA Twitter hot takes
 - "According to Performance Elo..." takes

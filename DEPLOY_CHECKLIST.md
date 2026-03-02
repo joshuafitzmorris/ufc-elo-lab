@@ -4,6 +4,30 @@
 **Estimated cost:** ~$10-15/month (db-f1-micro tier)  
 **Launch target:** UFC 326 (March 7, 2026)
 
+## Step 0: Pre-Launch Data Refresh
+
+Before deploying, update fights.json with recent UFC events:
+
+```bash
+cd projects/ufc_elo
+
+# Check current data freshness
+node -e "const d=JSON.parse(require('fs').readFileSync('fights.json'));console.log('Latest:',d.fights.sort((a,b)=>new Date(b.date)-new Date(a.date))[0].date)"
+
+# Scrape recent events (rate limit: max 1x per hour)
+npx tsx scripts/scrapeUfcEvents.ts --limit 10 --output fights_new.json
+
+# Merge with existing data
+node scripts/mergeFights.js  # or manually merge
+
+# Verify
+node -e "const d=JSON.parse(require('fs').readFileSync('fights.json'));console.log('Total fights:',d.fights.length)"
+```
+
+**Note:** Current data is from Feb 7, 2026. Update before UFC 326 launch (March 7).
+
+---
+
 ## Prerequisites
 
 - [ ] GCP Project with billing enabled
