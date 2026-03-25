@@ -16,7 +16,7 @@ export default function NotFound() {
             Fighter not found
           </h2>
           <p className="text-lg text-[var(--muted)]">
-            This page hasn't entered the octagon yet. Perhaps it's still in training camp?
+            This page hasn&apos;t entered the octagon yet. Perhaps it&apos;s still in training camp?
           </p>
         </div>
 

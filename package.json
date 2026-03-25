@@ -2,9 +2,6 @@
   "name": "ufc_elo",
   "version": "0.1.0",
   "private": true,
-  "overrides": {
-    "ajv": "^8.18.0"
-  },
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",

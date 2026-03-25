@@ -13,10 +13,10 @@ export default function FighterNotFound() {
 
         <div className="flex flex-col gap-3">
           <h2 className="text-3xl font-semibold text-[var(--foreground)]">
-            This fighter hasn't entered the octagon yet
+            This fighter hasn&apos;t entered the octagon yet
           </h2>
           <p className="text-lg text-[var(--muted)]">
-            We couldn't find a fighter with that ID. They might be training for their debut, or the link might be incorrect.
+            We couldn&apos;t find a fighter with that ID. They might be training for their debut, or the link might be incorrect.
           </p>
         </div>
 
