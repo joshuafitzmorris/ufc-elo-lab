@@ -1,98 +1,127 @@
 # UFC ELO — Vercel Quick Deploy
 
-**Time to deploy: ~15 minutes**  
-**Cost: $0 (hobby tier) or $20/mo (Pro)**
+**Time to deploy: ~10 minutes**
+**Cost: $0 (Hobby) or $20/mo (Pro)**
 
-This is the fastest path to production. Use this instead of the GCP setup if time is tight.
-
----
-
-## Step 1: Database (5 min)
-
-### Option A: Vercel Postgres (Recommended)
-1. Go to https://vercel.com/dashboard
-2. Create a new project → Import the `ufc-elo-lab` repo
-3. Go to Storage → Create Database → Postgres
-4. Copy the `DATABASE_URL` from connection details
-
-### Option B: Railway
-1. Go to https://railway.app
-2. New Project → Provision PostgreSQL
-3. Copy the connection string (use `Postgres Connection URL`)
-
-### Option C: Neon (Free Tier)
-1. Go to https://neon.tech
-2. Create project → Copy connection string
+Fastest path to production. No Terraform, no Docker, no GCP project needed.
 
 ---
 
-## Step 2: Deploy to Vercel (5 min)
+## Prerequisites
 
+- Vercel account (vercel.com)
+- GitHub repo access
+- Node 20+
+
+---
+
+## Step 1: Database (3 min)
+
+Pick one — all work with Prisma:
+
+### Option A: Neon (Recommended — free tier, serverless)
+1. Go to https://neon.tech → Create project
+2. Copy the pooled connection string
+3. That's your `DATABASE_URL`
+
+### Option B: Vercel Postgres
+1. Deploy first (Step 2), then go to Storage → Create Database → Postgres
+2. Auto-links `DATABASE_URL` to your project
+
+### Option C: Railway ($5/mo)
+1. https://railway.app → New Project → PostgreSQL
+2. Copy `Postgres Connection URL`
+
+---
+
+## Step 2: Deploy (3 min)
+
+### Via Dashboard (easiest)
+1. Go to https://vercel.com/new
+2. Import `joshuafitzmorris/ufc_elo` repo
+3. Add environment variable: `DATABASE_URL` = your connection string
+4. Click Deploy
+
+### Via CLI
 ```bash
-# From project root
-npm i -g vercel
-vercel login
-vercel link  # Link to existing project or create new
-vercel env add DATABASE_URL  # Paste your DB URL
-vercel --prod
+npx vercel login
+npx vercel link
+npx vercel env add DATABASE_URL  # paste connection string
+npx vercel --prod
 ```
 
-Or via dashboard:
-1. Import repo: https://vercel.com/new
-2. Add environment variable: `DATABASE_URL`
-3. Deploy
+> **Note:** `postinstall` hook automatically runs `prisma generate` during Vercel's build.
 
 ---
 
-## Step 3: Database Setup (5 min)
+## Step 3: Seed Database (3 min)
 
-After deploy, run migrations:
+After first deploy, push schema and seed data:
 
 ```bash
-# Set DATABASE_URL locally to production value
+# Set the production DATABASE_URL locally
 export DATABASE_URL="postgres://..."
 
-# Push schema
-npx prisma migrate deploy
+# Push Prisma schema to production DB
+npx prisma db push
 
-# Seed data
-npx prisma db seed
+# Seed with fights.json (8618 fights, ~34MB)
+npm run db:seed
 ```
 
-Or use Vercel CLI:
-```bash
-vercel env pull .env.production.local
-source .env.production.local
-npx prisma migrate deploy && npx prisma db seed
-```
+Seeding takes ~1-2 minutes for all historical fight data.
 
 ---
 
 ## Step 4: Verify
 
-- [ ] Site loads at vercel URL
-- [ ] Fighter list shows
-- [ ] Rankings display
-- [ ] Charts render
+- [ ] Site loads at `*.vercel.app` URL
+- [ ] `/rankings` shows Elo rankings
+- [ ] `/dashboard` renders charts
+- [ ] `/fighters/[id]` shows individual fighter stats
+- [ ] `/compare` works for head-to-head
+- [ ] `/api/health` returns 200
 
 ---
 
-## Custom Domain (Optional)
+## Custom Domain
 
-1. Go to Vercel project → Settings → Domains
-2. Add your domain
-3. Update DNS per Vercel instructions
+1. Vercel project → Settings → Domains
+2. Add domain (e.g., `ufcelo.com`)
+3. Update DNS (CNAME to `cname.vercel-dns.com`)
 
 ---
 
-## Compared to GCP Setup
+## Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `DATABASE_URL` | Yes | PostgreSQL connection string |
+
+That's it. No other secrets needed.
+
+---
+
+## Post-Deploy Checklist
+
+- [ ] Database seeded with all fights
+- [ ] SEO meta tags rendering (check with https://cards-dev.twitter.com/validator)
+- [ ] OG images working (test with Facebook debugger)
+- [ ] Sitemap accessible at `/sitemap.xml`
+- [ ] PWA manifest at `/manifest.webmanifest`
+- [ ] Set up Vercel Analytics (free on Hobby)
+
+---
+
+## Compared to GCP
 
 | | Vercel | GCP |
 |---|--------|-----|
-| Time | 15 min | 1-2 hours |
-| Cost | $0-20/mo | $10-15/mo |
-| Complexity | Click deploy | Terraform, secrets, service accounts |
-| DB | Vercel Postgres included | Cloud SQL setup required |
-| CI/CD | Automatic | GitHub Actions config |
+| Time | 10 min | 1-2 hours |
+| Cost | $0 | $10-15/mo minimum |
+| Complexity | Click deploy | Terraform + Docker + service accounts |
+| DB | Neon free tier | Cloud SQL ($7/mo+) |
+| CI/CD | Automatic on push | GitHub Actions config |
+| Custom domain | Free | Load balancer + SSL cert |
 
-**For a quick launch, use Vercel. Migrate to GCP later if needed.**
+**Use Vercel. Migrate to GCP later only if you need to.**
